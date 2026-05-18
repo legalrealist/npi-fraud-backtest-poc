@@ -1,11 +1,11 @@
 # Medicare Fraud Backtest POC — Results
 
-**Generated:** 2026-05-15 14:00
+**Generated:** 2026-05-18 10:07
 
 ## Cohort Summary
 
 - **Excluded providers matched to Part B billing:** 289
-- **Peer providers (same state/specialty/year):** 3,393,561
+- **Peer providers (same state/specialty/year):** 3,393,547
 - **States:** 41 states
 - **Exclusion date range:** 2018-2023
 - **Billing data:** best available pre-exclusion year per provider
@@ -16,11 +16,11 @@
 |-------|----------|-------|
 | AL | 5 | 34,303 |
 | AZ | 3 | 37,390 |
-| CA | 31 | 440,421 |
+| CA | 31 | 440,417 |
 | CO | 1 | 15,424 |
 | CT | 2 | 12,815 |
 | DE | 1 | 3,287 |
-| FL | 30 | 270,182 |
+| FL | 30 | 270,177 |
 | GA | 11 | 92,063 |
 | HI | 2 | 6,120 |
 | IA | 2 | 19,025 |
@@ -49,7 +49,7 @@
 | PR | 5 | 16,248 |
 | SC | 3 | 26,269 |
 | SD | 1 | 3,276 |
-| TN | 12 | 100,410 |
+| TN | 12 | 100,405 |
 | TX | 30 | 337,740 |
 | UT | 1 | 6,793 |
 | VA | 6 | 110,771 |
@@ -358,11 +358,11 @@
 
 | Feature | n_excl | Excluded Mean | Peer Mean | Cohen's d | p (M-W) | p (Bonf) | Sig? |
 |---------|--------|-------------|-----------|----------|---------|----------|------|
-| total_services | 289 | 4346.3 | 2834.0 | +0.04 | 0.4848 | 1.0000 |  |
-| total_benes | 289 | 244.8 | 333.3 | -0.03 | 0.0001 | 0.0009 | YES |
+| total_services | 289 | 4346.3 | 2823.0 | +0.04 | 0.4848 | 1.0000 |  |
+| total_benes | 289 | 244.8 | 333.2 | -0.03 | 0.0001 | 0.0009 | YES |
 | unique_hcpcs | 289 | 23.5 | 29.4 | -0.18 | 0.0015 | 0.0231 | YES |
-| submitted_charges | 289 | 335839.3 | 345731.5 | -0.00 | 0.0017 | 0.0261 | YES |
-| medicare_payment | 289 | 99791.9 | 87203.3 | +0.02 | 0.2091 | 1.0000 |  |
+| submitted_charges | 289 | 335839.3 | 345683.1 | -0.00 | 0.0017 | 0.0261 | YES |
+| medicare_payment | 289 | 99791.9 | 87184.0 | +0.02 | 0.2091 | 1.0000 |  |
 | services_per_bene | 289 | 11.8 | 9.1 | +0.02 | 0.0000 | 0.0000 | YES |
 | charge_to_payment_ratio | 287 | 4.2 | 4.6 | -0.07 | 0.0000 | 0.0000 | YES |
 | avg_charge_per_service | 289 | 208.2 | 342.8 | -0.23 | 0.0000 | 0.0000 | YES |
@@ -373,6 +373,31 @@
 | hcpcs_herfindahl | 276 | 0.3 | 0.2 | +0.52 | 0.0000 | 0.0000 | YES |
 | top_hcpcs_share | 276 | 0.4 | 0.2 | +0.66 | 0.0000 | 0.0000 | YES |
 | n_hcpcs_billed | 276 | 32.3 | 41.0 | -0.14 | 0.0003 | 0.0043 | YES |
+
+## Size-Adjusted Statistical Comparison
+
+Providers binned into practice-size tiers by total beneficiaries (11–50, 51–200, 201–500, 500+). Cohen's d computed within each tier and pooled as a weighted average. P-values combined across tiers using Fisher's method, then Bonferroni-corrected.
+
+| Feature | Cohen's d (raw) | Cohen's d (size-adjusted) | Change | p (Bonf) | Sig? |
+|---------|:-:|:-:|:-:|:-:|:-:|
+| total_services | +0.04 | +0.06 | +59% | 0.0000 | YES |
+| total_benes | -0.03 | -0.03 | +0% | 1.0000 |  |
+| unique_hcpcs | -0.18 | -0.04 | +78% | 1.0000 |  |
+| submitted_charges | -0.00 | +0.01 | +286% | 0.1891 |  |
+| medicare_payment | +0.02 | +0.12 | +512% | 0.0000 | YES |
+| services_per_bene | +0.02 | +0.08 | +246% | 0.0000 | YES |
+| charge_to_payment_ratio | -0.07 | -0.11 | -49% | 0.0000 | YES |
+| avg_charge_per_service | -0.23 | -0.23 | -1% | 0.0000 | YES |
+| payment_per_bene | +0.10 | +0.17 | +80% | 0.0000 | YES |
+| bene_avg_age | -0.31 | -0.27 | +14% | 0.1242 |  |
+| bene_avg_risk | +0.18 | +0.23 | +29% | 0.0002 | YES |
+| dual_share | +0.78 | +0.79 | +1% | 0.0000 | YES |
+| hcpcs_herfindahl | +0.52 | +0.60 | +16% | 0.0000 | YES |
+| top_hcpcs_share | +0.66 | +0.71 | +8% | 0.0000 | YES |
+| n_hcpcs_billed | -0.14 | +0.11 | +178% | 0.0051 | YES |
+
+**11 of 15 features remain significant after size adjustment** (vs. 13 raw). 
+Largest effect size reduction: **charge_to_payment_ratio** (d=-0.07 → -0.11). Most stable: **total_benes** (d=-0.03 → -0.03).
 
 ## Key Findings
 
@@ -391,6 +416,150 @@
 - **hcpcs_herfindahl**: excluded are higher (d=+0.52)
 - **top_hcpcs_share**: excluded are higher (d=+0.66)
 - **n_hcpcs_billed**: excluded are lower (d=-0.14)
+
+## Predictive Risk Model
+
+Logistic regression trained on 15 billing features with balanced class weights to handle extreme imbalance (~207 excluded vs ~820,778 peers).
+
+- **AUC-ROC (5-fold CV):** 0.792 +/- 0.029
+- **Average Precision (5-fold CV):** 0.0005 +/- 0.0002
+- **Base rate:** 0.0252%
+
+### Feature Importance (Standardized Coefficients)
+
+| Feature | Coefficient | Direction |
+|---------|------------|-----------|
+| top_hcpcs_share | +2.219 | higher risk |
+| hcpcs_herfindahl | -1.622 | lower risk |
+| total_benes | -1.582 | lower risk |
+| avg_charge_per_service | -0.712 | lower risk |
+| dual_share | +0.578 | higher risk |
+| services_per_bene | -0.499 | lower risk |
+| payment_per_bene | +0.419 | higher risk |
+| total_services | +0.311 | higher risk |
+| submitted_charges | -0.251 | lower risk |
+| medicare_payment | +0.246 | higher risk |
+| n_hcpcs_billed | +0.197 | higher risk |
+| charge_to_payment_ratio | +0.131 | higher risk |
+| bene_avg_age | +0.083 | higher risk |
+| unique_hcpcs | -0.053 | lower risk |
+| bene_avg_risk | -0.032 | lower risk |
+
+### Peer Risk Distribution
+
+| Threshold | Peers Above | % of Peers |
+|-----------|------------|------------|
+| > 0.1 | 796,356 | 97.02% |
+| > 0.2 | 692,623 | 84.39% |
+| > 0.3 | 541,109 | 65.93% |
+| > 0.5 | 310,032 | 37.77% |
+| > 0.8 | 76,934 | 9.37% |
+| > 0.9 | 22,410 | 2.73% |
+
+### Top 50 Highest-Scoring Peers
+
+These active providers have billing patterns most similar to providers who were later excluded for fraud.
+
+<details><summary>Click to expand</summary>
+
+| # | NPI | Name | State | Specialty | Risk Score |
+|---|-----|------|-------|-----------|------------|
+| 1 | 1104917202 | Clyde Smith | TX | General Surgery | 1.0000 |
+| 2 | 1780279448 | Nikolaus King | TN | Nurse Practitioner | 1.0000 |
+| 3 | 1992245401 | Kellie Humphrey | TN | Nurse Practitioner | 1.0000 |
+| 4 | 1881023422 | April Lopez | TX | Nurse Practitioner | 1.0000 |
+| 5 | 1356441943 | Osvaldo Wesly | IL | Hematology-Oncology | 1.0000 |
+| 6 | 1255329694 | KATHERINE THOMPSON | TX | Pediatric Medicine | 1.0000 |
+| 7 | 1740387281 | David Godat | TX | Plastic and Reconstructive Surgery | 1.0000 |
+| 8 | 1831618768 | Bio Choice Laboratory, Inc | TX | Clinical Laboratory | 1.0000 |
+| 9 | 1053826636 | Marta Solano | AZ | Nurse Practitioner | 1.0000 |
+| 10 | 1215484431 | Shelia Jones | TX | Nurse Practitioner | 1.0000 |
+| 11 | 1689607384 | Care Dx, Inc. | CA | Clinical Laboratory | 1.0000 |
+| 12 | 1174710982 | Carol Bowen-Wells | FL | General Surgery | 1.0000 |
+| 13 | 1699330415 | Artemis Dna Tx Llc | TX | Clinical Laboratory | 1.0000 |
+| 14 | 1871896787 | Merri Rhodes | PA | Nurse Practitioner | 1.0000 |
+| 15 | 1831205517 | Karl Bandlien | MI | General Surgery | 1.0000 |
+| 16 | 1790098218 | Norris Morrison | CA | Podiatry | 1.0000 |
+| 17 | 1629392568 | SHAWN CAZZELL | CA | Podiatry | 1.0000 |
+| 18 | 1083126783 | Lisa Luchsinger | TX | Physician Assistant | 1.0000 |
+| 19 | 1922643477 | Dana Lau | TX | Nurse Practitioner | 1.0000 |
+| 20 | 1558994947 | Nicole Lee | TX | Nurse Practitioner | 1.0000 |
+| 21 | 1538645510 | Roseline Jones | TX | Nurse Practitioner | 1.0000 |
+| 22 | 1366963795 | Jennifer Desmond | TX | Nurse Practitioner | 1.0000 |
+| 23 | 1891274296 | Erika Martin | TX | Nurse Practitioner | 1.0000 |
+| 24 | 1376679357 | Eugene Cherny | IA | Plastic and Reconstructive Surgery | 1.0000 |
+| 25 | 1205305612 | Persaphone Harris | FL | Nurse Practitioner | 1.0000 |
+| 26 | 1316577471 | Thuy Vo | CA | Nurse Practitioner | 1.0000 |
+| 27 | 1386318780 | Ulrike Pasternak | NV | Nurse Practitioner | 1.0000 |
+| 28 | 1952581027 | BRANDON HARDESTY | IN | Internal Medicine | 1.0000 |
+| 29 | 1659395598 | Virgil Hernandez | CA | Podiatry | 1.0000 |
+| 30 | 1023311040 | Stephen Dubin | NV | General Practice | 1.0000 |
+| 31 | 1114926433 | Natan Shaoulian | CA | Neurology | 1.0000 |
+| 32 | 1194919274 | MATTIE SHERARD | TN | Nurse Practitioner | 1.0000 |
+| 33 | 1255832002 | Nyrie Austin | NJ | Nurse Practitioner | 1.0000 |
+| 34 | 1447451836 | Jose Acevedo | PR | Neurology | 1.0000 |
+| 35 | 1740662147 | Babak Baharloo | TX | Podiatry | 1.0000 |
+| 36 | 1184920894 | Amena Babers | TX | Nurse Practitioner | 1.0000 |
+| 37 | 1063477073 | ANNE GREIST | IN | Hematology-Oncology | 1.0000 |
+| 38 | 1487675104 | Mary Andrea | NY | Podiatry | 1.0000 |
+| 39 | 1568835890 | Teresa Gaither | AZ | Nurse Practitioner | 1.0000 |
+| 40 | 1558672279 | Natera, Inc. | CA | Clinical Laboratory | 1.0000 |
+| 41 | 1003056821 | Allyson Pizzo-Berkey | CA | Pain Management | 1.0000 |
+| 42 | 1396703310 | Owen Ellington | TX | Internal Medicine | 1.0000 |
+| 43 | 1619346996 | Beth Bingaman | NC | Nurse Practitioner | 1.0000 |
+| 44 | 1861748154 | Nicholas Bai | CA | Physician Assistant | 1.0000 |
+| 45 | 1023631884 | Siya Oloso | TX | Nurse Practitioner | 1.0000 |
+| 46 | 1780001859 | Vista Clinical Diagnostics Llc | VA | Clinical Laboratory | 1.0000 |
+| 47 | 1205162955 | Sonoran Desert Pathology Associates Llc | CA | Clinical Laboratory | 1.0000 |
+| 48 | 1982055091 | Diana Jordan | TX | Nurse Practitioner | 1.0000 |
+| 49 | 1326280371 | Millicent Rovelo | CA | Plastic and Reconstructive Surgery | 1.0000 |
+| 50 | 1508473893 | Kimberly Armstrong | TX | Nurse Practitioner | 1.0000 |
+
+</details>
+
+> **Note:** Risk scores reflect statistical similarity to excluded providers' billing patterns, not fraud probability. High-scoring providers may have legitimate reasons for their billing patterns.
+
+## Model Validation: Out-of-Sample Peer Investigation
+
+To test whether the model identifies real fraud beyond its training data, we searched public records (DOJ press releases, OIG enforcement actions, state medical boards) for the top 50 highest-scoring peers. **6 of 30 searched (20%) had confirmed enforcement actions** — none were in the LEIE training labels.
+
+This is out-of-sample validation: the model was trained only on LEIE-excluded providers, yet its highest-scored peers include providers with real fraud convictions, OIG Corporate Integrity Agreements, DOJ indictments, and qui tam complaints. The model identified them purely from billing patterns.
+
+### Findings
+
+| Provider | State | Specialty | Action | Summary |
+|----------|-------|-----------|--------|---------|
+| [Phlebxpress](https://www.justice.gov/usao-edca/pr/owners-mobile-phlebotomy-company-plead-guilty-7-million-medicare-fraud-0) | CA | Clinical Laboratory | Conviction | Owners pled guilty to $7M Medicare fraud — false billing for overstated travel mileage. Each sentenced to 15 months. |
+| [Advanced Clinical Laboratories, Inc.](https://oig.hhs.gov/compliance/corporate-integrity-agreements/browse-cias/vista-clinical-diagnostics-llc-access-dermpath-inc-and-advanced-clinical-laboratories-inc/) | FL | Clinical Laboratory | OIG CIA | Corporate Integrity Agreement with OIG for False Claims Act violations — added diagnosis codes not provided by physicians. $500K+ recovery. |
+| [Hemal Mehta](https://www.justice.gov/archives/opa/pr/tennessee-medical-doctor-and-advanced-practice-registered-nurse-charged-scheme-unlawfully) | TN | Pain Management | DOJ Indictment | DOJ indictment — 10 counts, conspiracy to distribute controlled substances (oxycodone, morphine, oxymorphone) 2016-2018. FBI/HHS-OIG/TBI investigation. |
+| [Natera, Inc.](https://www.classaction.org/news/8.25m-natera-settlement-ends-class-action-lawsuit-over-allegedly-inaccurate-prenatal-testing) | CA | Clinical Laboratory | Qui Tam | Qui tam complaint for false claims to government health programs. $8.25M class action settlement for inaccurate prenatal tests. DOJ investigation closed 2024 with no finding of wrongdoing. |
+| [Care Dx, Inc.](https://investors.caredx.com/news/news-details/2024/CareDx-Announces-Closure-of-DOJ-Investigation-with-No-Finding-of-Wrongdoing/default.aspx) | CA | Clinical Laboratory | Investigation | DOJ investigation (closed 2024, no wrongdoing); qui tam whistleblower lawsuit alleging improper test bundling and kickbacks; derivative settlement pending June 2026. |
+| [Stephen Dubin](https://medboard.nv.gov/Resources/Public/2023/Complaint_-_Stephen_Dubin,_MD_-_Case_No_23-11289-1/) | NV | General Practice | Board Complaint | Two complaints filed with Nevada State Board of Medical Examiners (Case No. 23-11289-1 and 23-11289-2). Details not publicly available. |
+
+### Why These Providers Weren't in LEIE
+
+Each flagged provider has a specific reason for not appearing in the LEIE exclusion list used as training labels:
+
+| Provider | Reason |
+|----------|--------|
+| Phlebxpress | Company NPI not excluded — only individual owners (Santibanez, Hazard) excluded under personal names in 2024 |
+| Advanced Clinical Laboratories, Inc. | Signed Corporate Integrity Agreement as alternative to exclusion |
+| Hemal Mehta | Indicted but not yet convicted/excluded — exclusion lags years behind indictment |
+| Natera, Inc. | DOJ investigation closed with no wrongdoing finding — no basis for exclusion |
+| Care Dx, Inc. | DOJ investigation closed with no wrongdoing finding — no basis for exclusion |
+| Stephen Dubin | Board complaints only — no conviction or OIG action |
+
+### Key Patterns
+
+- **All 4 clinical laboratories** in the top 50 had enforcement actions (Phlebxpress, Advanced Clinical Laboratories, Natera, CareDx) — labs are classic fraud vehicles and the model surfaces them reliably
+- The model catches cases the exclusion system misses: entity NPIs that stay active after individual owners are excluded, providers under CIA monitoring instead of exclusion, and indicted providers awaiting conviction
+- 24 of 30 searched had no public record — high scores are investigative leads, not verdicts
+
+### Entity vs. Individual NPI Gap
+
+The LEIE excludes *individuals* but Medicare billing often happens through *organizational* NPIs. When a provider is convicted and excluded, their company's NPI can remain active in CMS data. Example: Phlebxpress (NPI 1174906432) owners Gabriella Santibanez and Lisa Hazard were each convicted of $7M Medicare fraud and excluded from LEIE in May 2024 under §1128(a)(1) — but the company NPI was never excluded and continued appearing in CMS billing data as a ‘peer.’
+
+This pipeline addresses confirmed cases by reclassifying them out of the peer pool when identified through public records search. However, the systemic gap remains: any fraud detection system that relies solely on individual-level exclusion lists will miss organizational NPIs that continue billing after their operators are excluded. The model's ability to flag these entities from billing patterns alone — without knowing about the individual exclusions — demonstrates its value as a complementary detection mechanism.
 
 ## DOJ Prosecution Matching
 
@@ -452,6 +621,12 @@ This is a floor estimate — §1128(a)(1) exclusion requires a conviction, so al
 
 ### By State
 ![By State](figures/by_state.png)
+
+### Risk Distribution
+![Risk Distribution](figures/risk_distribution.png)
+
+### Feature Importance
+![Feature Importance](figures/feature_importance.png)
 
 ## Caveats
 

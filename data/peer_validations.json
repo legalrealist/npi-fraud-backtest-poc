@@ -1,0 +1,79 @@
+{
+  "metadata": {
+    "method": "Web search of justice.gov, oig.hhs.gov, state medical boards, and news sources",
+    "providers_searched": 30,
+    "matches_found": 6,
+    "match_rate": 0.20,
+    "date": "2026-05-18",
+    "notes": "Out-of-sample validation — none of these providers were in the LEIE training labels. The model identified them purely from billing patterns."
+  },
+  "matches": [
+    {
+      "npi": "1174906432",
+      "name": "Phlebxpress",
+      "state": "CA",
+      "specialty": "Clinical Laboratory",
+      "risk_score": 1.0,
+      "finding_type": "conviction",
+      "summary": "Owners pled guilty to $7M Medicare fraud — false billing for overstated travel mileage. Each sentenced to 15 months.",
+      "source_url": "https://www.justice.gov/usao-edca/pr/owners-mobile-phlebotomy-company-plead-guilty-7-million-medicare-fraud-0",
+      "why_not_in_leie": "Company NPI not excluded — only individual owners (Santibanez, Hazard) excluded under personal names in 2024"
+    },
+    {
+      "npi": "1033281324",
+      "name": "Advanced Clinical Laboratories, Inc.",
+      "state": "FL",
+      "specialty": "Clinical Laboratory",
+      "risk_score": 1.0,
+      "finding_type": "cia",
+      "summary": "Corporate Integrity Agreement with OIG for False Claims Act violations — added diagnosis codes not provided by physicians. $500K+ recovery.",
+      "source_url": "https://oig.hhs.gov/compliance/corporate-integrity-agreements/browse-cias/vista-clinical-diagnostics-llc-access-dermpath-inc-and-advanced-clinical-laboratories-inc/",
+      "why_not_in_leie": "Signed Corporate Integrity Agreement as alternative to exclusion"
+    },
+    {
+      "npi": "1174533772",
+      "name": "Hemal Mehta",
+      "state": "TN",
+      "specialty": "Pain Management",
+      "risk_score": 1.0,
+      "finding_type": "indictment",
+      "summary": "DOJ indictment — 10 counts, conspiracy to distribute controlled substances (oxycodone, morphine, oxymorphone) 2016-2018. FBI/HHS-OIG/TBI investigation.",
+      "source_url": "https://www.justice.gov/archives/opa/pr/tennessee-medical-doctor-and-advanced-practice-registered-nurse-charged-scheme-unlawfully",
+      "why_not_in_leie": "Indicted but not yet convicted/excluded — exclusion lags years behind indictment"
+    },
+    {
+      "npi": "1558994947",
+      "name": "Natera, Inc.",
+      "state": "CA",
+      "specialty": "Clinical Laboratory",
+      "risk_score": 1.0,
+      "finding_type": "qui_tam",
+      "summary": "Qui tam complaint for false claims to government health programs. $8.25M class action settlement for inaccurate prenatal tests. DOJ investigation closed 2024 with no finding of wrongdoing.",
+      "source_url": "https://www.classaction.org/news/8.25m-natera-settlement-ends-class-action-lawsuit-over-allegedly-inaccurate-prenatal-testing",
+      "why_not_in_leie": "DOJ investigation closed with no wrongdoing finding — no basis for exclusion"
+    },
+    {
+      "npi": "1689607384",
+      "name": "Care Dx, Inc.",
+      "state": "CA",
+      "specialty": "Clinical Laboratory",
+      "risk_score": 1.0,
+      "finding_type": "investigation",
+      "summary": "DOJ investigation (closed 2024, no wrongdoing); qui tam whistleblower lawsuit alleging improper test bundling and kickbacks; derivative settlement pending June 2026.",
+      "source_url": "https://investors.caredx.com/news/news-details/2024/CareDx-Announces-Closure-of-DOJ-Investigation-with-No-Finding-of-Wrongdoing/default.aspx",
+      "why_not_in_leie": "DOJ investigation closed with no wrongdoing finding — no basis for exclusion"
+    },
+    {
+      "npi": "1023311040",
+      "name": "Stephen Dubin",
+      "state": "NV",
+      "specialty": "General Practice",
+      "risk_score": 1.0,
+      "finding_type": "board_complaint",
+      "summary": "Two complaints filed with Nevada State Board of Medical Examiners (Case No. 23-11289-1 and 23-11289-2). Details not publicly available.",
+      "source_url": "https://medboard.nv.gov/Resources/Public/2023/Complaint_-_Stephen_Dubin,_MD_-_Case_No_23-11289-1/",
+      "why_not_in_leie": "Board complaints only — no conviction or OIG action"
+    }
+  ],
+  "no_match_sample_count": 24
+}

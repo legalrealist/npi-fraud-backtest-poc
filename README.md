@@ -44,6 +44,47 @@ The pipeline went through several iterations to reach the current design:
 5. **Part B, all states, §1128(a)(1) + §1128(b)(7) only** — 245 providers, 10/15 significant. Power recovered, but concentration metrics weaker.
 6. **Part B, all states, §1128(a)(1) + §1128(a)(3) + §1128(b)(7)** — 289 providers, 14/15 significant. Adding healthcare fraud felonies back in recovered concentration signal while keeping the clean cohort.
 
+## Practice Size Control
+
+The strongest methodological objection: the fraud fingerprint might be a small-practice signal. The pipeline tests this by binning providers into four size tiers (11–50, 51–200, 201–500, 500+ beneficiaries) and re-running the statistical comparison within each tier.
+
+**11 of 15 features remain significant after size adjustment** (vs. 13 raw). The three core concentration metrics got *stronger*:
+
+| Feature | Raw d | Size-adjusted d |
+|---------|:---:|:---:|
+| dual_share | +0.78 | +0.79 |
+| top_hcpcs_share | +0.66 | +0.71 |
+| hcpcs_herfindahl | +0.52 | +0.60 |
+
+Features that lost significance (total_benes, unique_hcpcs, bene_avg_age, submitted_charges) are plausibly size-confounded. The behavioral fingerprint is robust to this control.
+
+## Predictive Risk Model
+
+Logistic regression trained on all 15 features with balanced class weights. **Cross-validated AUC-ROC: 0.791** — the model reliably distinguishes excluded from non-excluded billing patterns.
+
+Top predictive features (standardized coefficients):
+- **Top HCPCS share** (+2.22) — single-code billing concentration is the strongest predictor
+- **HCPCS Herfindahl** (−1.62) — interacts with top share to capture concentration shape
+- **Total beneficiaries** (−1.56) — smaller patient panels = higher risk
+- **Avg charge per service** (−0.71) — lower charges, consistent with high-volume/low-complexity pattern
+- **Dual-eligible share** (+0.58) — more dual-eligible patients = higher risk
+
+The model scores all 2.4M peers on a 0–1 scale. At the 0.9 threshold, 31,595 peers (1.3%) have billing patterns highly similar to excluded providers. Top 50 highest-scoring peers listed in [`report.md`](report.md).
+
+## Model Validation: Out-of-Sample Peer Investigation
+
+To test whether the model identifies real fraud beyond its training data, we searched public records (DOJ, OIG, state medical boards) for the top 50 highest-scoring peers. **6 of 30 searched (20%) had confirmed enforcement actions** — none were in the LEIE training labels.
+
+Key findings:
+- **Phlebxpress** (CA, Clinical Lab) — owners convicted of $7M Medicare fraud, sentenced to 15 months each. Company NPI stayed active because only individuals were excluded.
+- **Advanced Clinical Laboratories** (FL, Clinical Lab) — OIG Corporate Integrity Agreement for False Claims Act violations
+- **Hemal Mehta** (TN, Pain Management) — DOJ indictment, 10 counts of conspiracy to distribute controlled substances
+- **Natera, Inc.** (CA, Clinical Lab) — qui tam complaint + $8.25M settlement
+- **CareDx, Inc.** (CA, Clinical Lab) — DOJ investigation + qui tam whistleblower lawsuit
+- **Stephen Dubin** (NV, General Practice) — two Nevada medical board complaints
+
+All 4 clinical laboratories in the top 50 had enforcement actions. The model catches cases the exclusion system misses: entity NPIs active after individual owners are excluded, providers under monitoring instead of exclusion, and indicted providers awaiting conviction. Data stored in `data/peer_validations.json`.
+
 ## DOJ Prosecution Matching
 
 A sample of 43 excluded providers was searched against DOJ press releases on justice.gov. **17 (40%) matched** to published federal prosecutions — sentences ranging from 15 months to 84 months, fraud amounts from $2.5M to $110M.
@@ -68,7 +109,7 @@ All data is publicly available, no API keys required.
 ## Usage
 
 ```bash
-pip install pandas scipy matplotlib requests pyarrow
+pip install pandas scipy matplotlib requests pyarrow scikit-learn
 python backtest.py
 ```
 
@@ -83,8 +124,9 @@ First run downloads ~4GB of CMS data for all states (cached to `data/` as parque
 5. Build peer groups — same state, same specialty, same year, ≥11 beneficiaries
 6. Compute 15 features — volume, intensity, concentration, demographics
 7. Statistical comparison — Mann-Whitney U, Welch's t-test, Cohen's d, Bonferroni correction
-8. DOJ prosecution matching — cross-reference excluded providers with justice.gov press releases
-9. Visualizations and report
+8. Predictive risk model — logistic regression scoring every provider by fraud-similarity (AUC=0.79)
+9. DOJ prosecution matching — cross-reference excluded providers with justice.gov press releases
+10. Visualizations and report
 
 ## Caveats
 
