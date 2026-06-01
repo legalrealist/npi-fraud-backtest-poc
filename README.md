@@ -2,7 +2,7 @@
 
 Excluded Medicare providers bill differently from their peers — and those differences are visible **in the year before they're caught**. This proof-of-concept backtest quantifies those differences and builds a predictive model that flags providers with billing patterns similar to known fraudsters.
 
-The question for compliance teams, qui tam relators, and enforcement agencies: if we can see the signal this clearly in public data, why are we waiting for convictions?
+The question for compliance teams, qui tam relators, and enforcement agencies: if the signal is this clear in public data, why wait for convictions?
 
 Companion to the [LegalRealist AI Landscape](https://legalrealist.ai) series.
 
@@ -11,7 +11,7 @@ Companion to the [LegalRealist AI Landscape](https://legalrealist.ai) series.
 - **289 excluded providers** matched to pre-exclusion Medicare Part B billing, compared against **3.39 million peers**
 - **14 of 15 billing features** statistically significant after Bonferroni correction
 - **Predictive model AUC: 0.79** — reliably distinguishes excluded from non-excluded billing patterns
-- **20% of top-scoring peers** had confirmed enforcement actions when we checked public records — cases the exclusion system missed
+- **20% of top-scoring peers** had confirmed enforcement actions in public records — cases the exclusion system missed
 
 ## What the fraud fingerprint looks like
 
@@ -30,7 +30,7 @@ These signals survive practice-size controls — 11 of 15 features remain signif
 
 ## Who the model catches that the exclusion system misses
 
-We searched public records (DOJ, OIG, state medical boards) for the 50 highest-scoring peers — providers flagged by the model but not in the exclusion database. **6 of 30 searched (20%) had confirmed enforcement actions:**
+A public records search (DOJ, OIG, state medical boards) of the 50 highest-scoring peers — providers flagged by the model but not in the exclusion database. **6 of 30 searched (20%) had confirmed enforcement actions:**
 
 - **Phlebxpress** (CA) — owners convicted of $7M Medicare fraud. Company NPI stayed active because only individuals were excluded.
 - **Advanced Clinical Laboratories** (FL) — OIG Corporate Integrity Agreement for False Claims Act violations
@@ -43,7 +43,7 @@ All 4 clinical laboratories in the top 50 had enforcement actions. The model fin
 
 ## DOJ prosecution cross-reference
 
-We searched 43 excluded providers against DOJ press releases. **17 (40%) matched** published federal prosecutions — sentences from 15 months to 84 months, fraud amounts from $2.5M to $110M.
+A search of 43 excluded providers against DOJ press releases found **17 (40%) matched** to published federal prosecutions — sentences from 15 months to 84 months, fraud amounts from $2.5M to $110M.
 
 High match-rate states (TX 80%, NJ 75%, NY 67%) are Medicare Fraud Strike Force jurisdictions. Low match-rate states (OH 14%, CA 0%) are likely prosecuted at the state level by AG offices. All matched prosecutions with DOJ links are in [`report.md`](report.md).
 
@@ -57,7 +57,7 @@ The cohort is restricted to fraud-related exclusions under [Section 1128 of the 
 | §1128(a)(3) | Felony healthcare fraud conviction | 300 |
 | §1128(b)(7) | Excessive claims / unnecessary services | 78 |
 
-We exclude drug felonies (§1128(a)(4)), license revocations (§1128(b)(4)), and patient abuse (§1128(a)(2)) — these aren't billing-pattern fraud. This filtering matters: with all exclusion types mixed in, the patient risk score showed zero signal (d=0.00). After restricting to fraud types, it became significant (d=+0.18). Non-fraud exclusions were masking the signal.
+The cohort excludes drug felonies (§1128(a)(4)), license revocations (§1128(b)(4)), and patient abuse (§1128(a)(2)) — these aren't billing-pattern fraud. This filtering matters: with all exclusion types mixed in, the patient risk score showed zero signal (d=0.00). After restricting to fraud types, it became significant (d=+0.18). Non-fraud exclusions were masking the signal.
 
 ## Data sources
 
